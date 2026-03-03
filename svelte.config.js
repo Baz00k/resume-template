@@ -24,7 +24,8 @@ const config = {
 		},
 
 		alias: {
-			$components: './src/components'
+			$components: './src/components',
+			$layouts: './src/layouts'
 		}
 	}
 };
