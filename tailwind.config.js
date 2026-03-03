@@ -65,4 +65,4 @@ const config = {
 	plugins: [typography, forms]
 };
 
-module.exports = config;
+export default config;
