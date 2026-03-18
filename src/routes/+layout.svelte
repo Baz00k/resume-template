@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import { base } from '$app/paths';
 	import Header from '$components/Header.svelte';
 	import { localizeHref, locales } from '$lib/translations/runtime';
 </script>
@@ -7,7 +8,7 @@
 <svelte:head>
 	<!-- Hidden links for prerendering all locale variants -->
 	{#each locales as locale}
-		<link rel="alternate" hreflang={locale} href={localizeHref('/', { locale })} />
+		<link rel="alternate" hreflang={locale} href={base + localizeHref('/', { locale })} />
 	{/each}
 </svelte:head>
 

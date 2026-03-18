@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { getLocale, locales, localizeHref } from '$lib/translations/runtime';
 	import type { Locale } from '$lib/translations/runtime';
 
 	const handleLanguageChange = (event: Event) => {
 		const select = event.target as HTMLSelectElement;
 		const newLocale = select.value as Locale;
-		window.location.href = localizeHref('/', { locale: newLocale });
+		window.location.href = base + localizeHref('/', { locale: newLocale });
 	};
 
 	const getLanguageDisplayName = (tag: Locale) => {
