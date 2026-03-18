@@ -5,6 +5,6 @@
 
 <header class="flex w-full items-center justify-between px-2 pt-4 lg:px-6 print:hidden">
 	<LanguageSwitcher />
-	<div class="invisible flex-1" />
+	<div class="invisible flex-1"></div>
 	<ExportToPdfButton />
 </header>

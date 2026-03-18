@@ -18,6 +18,10 @@ const config = {
 			fallback: null
 		}),
 
+		prerender: {
+			entries: ['*']
+		},
+
 		// Use base path for GitHub Pages
 		paths: {
 			base: dev ? '' : process.env.BASE_PATH

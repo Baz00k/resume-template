@@ -1,11 +1,16 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { getLocale, locales, localizeHref } from '$lib/translations/runtime';
 	import type { Locale } from '$lib/translations/runtime';
+
+	const normalizedBase = base.endsWith('/') && base !== '/' ? base.slice(0, -1) : base;
+	const withBase = (path: string) => (normalizedBase ? `${normalizedBase}${path}` : path);
 
 	const handleLanguageChange = (event: Event) => {
 		const select = event.target as HTMLSelectElement;
 		const newLocale = select.value as Locale;
-		window.location.href = localizeHref('/', { locale: newLocale });
+		const localizedHref = localizeHref('/', { locale: newLocale });
+		window.location.href = withBase(localizedHref);
 	};
 
 	const getLanguageDisplayName = (tag: Locale) => {
