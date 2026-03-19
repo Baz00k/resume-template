@@ -17,7 +17,7 @@ export const handle: Handle = ({ event, resolve }) => {
 	return paraglideMiddleware(modifiedRequest, ({ request: localizedRequest, locale }) => {
 		event.request = localizedRequest;
 		return resolve(event, {
-			transformPageChunk: ({ html }) => html.replace('%lang%', locale)
+			transformPageChunk: ({ html }) => html.replace('%paraglide.lang%', locale)
 		});
 	});
 };

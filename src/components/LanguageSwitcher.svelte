@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
 	import { base } from '$app/paths';
+	import { browser } from '$app/environment';
 	import {
 		getLocale,
 		locales,
@@ -11,7 +12,7 @@
 	} from '$lib/translations/runtime';
 	import type { Locale } from '$lib/translations/runtime';
 
-	// Detect locale from URL on client side (accounting for base path)
+	// Detect locale from URL (accounting for base path)
 	function detectLocaleFromUrl(): Locale {
 		if (typeof window === 'undefined') return baseLocale;
 
@@ -34,21 +35,18 @@
 			: baseLocale;
 	}
 
-	// Initialize: use getLocale() for SSR (server sets correct locale), detect on client
-	let currentLocale = $state<Locale>(getLocale());
+	// Initialize locale: use getLocale() which is set correctly by server during SSR,
+	// but on client during hydration, detect from URL to match server value
+	let currentLocale = $state<Locale>(browser ? detectLocaleFromUrl() : getLocale());
 
-	// On client side, update to match actual URL
+	// Sync Paraglide state with detected locale
 	$effect(() => {
-		const detected = detectLocaleFromUrl();
-		setLocale(detected, { reload: false });
-		currentLocale = detected;
+		setLocale(currentLocale, { reload: false });
 	});
 
-	// Re-sync after navigation
+	// Re-detect locale after navigation
 	afterNavigate(() => {
-		const detected = detectLocaleFromUrl();
-		setLocale(detected, { reload: false });
-		currentLocale = detected;
+		currentLocale = detectLocaleFromUrl();
 	});
 
 	const handleLanguageChange = (event: Event) => {
