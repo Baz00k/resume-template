@@ -3,8 +3,6 @@ import { base } from '$app/paths';
 import { paraglideMiddleware } from '$lib/translations/server';
 
 export const handle: Handle = ({ event, resolve }) => {
-	// Strip base path from URL before passing to Paraglide middleware
-	// so it can correctly detect the locale from the path
 	let modifiedRequest = event.request;
 	if (base) {
 		const url = new URL(event.request.url);

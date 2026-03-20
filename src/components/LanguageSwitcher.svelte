@@ -1,52 +1,13 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
 	import { base } from '$app/paths';
-	import { browser } from '$app/environment';
-	import {
-		getLocale,
-		locales,
-		localizeHref,
-		setLocale,
-		extractLocaleFromUrl,
-		baseLocale
-	} from '$lib/translations/runtime';
+	import { getLocale, locales, localizeHref } from '$lib/translations/runtime';
 	import type { Locale } from '$lib/translations/runtime';
 
-	// Detect locale from URL (accounting for base path)
-	function detectLocaleFromUrl(): Locale {
-		if (typeof window === 'undefined') return baseLocale;
+	let currentLocale = $state<Locale>(getLocale());
 
-		const url = new URL(window.location.href);
-		let pathname = url.pathname;
-
-		// Strip base path before extracting locale
-		if (base && pathname.startsWith(base)) {
-			pathname = pathname.slice(base.length) || '/';
-		}
-
-		// Create a modified URL with base-stripped pathname
-		const modifiedUrl = new URL(url);
-		modifiedUrl.pathname = pathname;
-
-		// Extract locale from the modified URL
-		const extractedLocale = extractLocaleFromUrl(modifiedUrl);
-		return extractedLocale && locales.includes(extractedLocale as Locale)
-			? (extractedLocale as Locale)
-			: baseLocale;
-	}
-
-	// Initialize locale: use getLocale() which is set correctly by server during SSR,
-	// but on client during hydration, detect from URL to match server value
-	let currentLocale = $state<Locale>(browser ? detectLocaleFromUrl() : getLocale());
-
-	// Sync Paraglide state with detected locale
-	$effect(() => {
-		setLocale(currentLocale, { reload: false });
-	});
-
-	// Re-detect locale after navigation
 	afterNavigate(() => {
-		currentLocale = detectLocaleFromUrl();
+		currentLocale = getLocale();
 	});
 
 	const handleLanguageChange = (event: Event) => {

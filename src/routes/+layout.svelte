@@ -3,6 +3,10 @@
 	import { base } from '$app/paths';
 	import Header from '$components/Header.svelte';
 	import { localizeHref, locales } from '$lib/translations/runtime';
+	import { setupLocaleOverride } from '$lib/i18n';
+
+	// Setup locale override before any components render
+	setupLocaleOverride();
 </script>
 
 <svelte:head>
